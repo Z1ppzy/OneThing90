@@ -10,6 +10,8 @@
         MinWidth="980"
         MinHeight="680"
         WindowStartupLocation="CenterScreen"
+        UseLayoutRounding="True"
+        SnapsToDevicePixels="True"
         Background="{DynamicResource WindowBrush}">
     <Window.Resources>
         <SolidColorBrush x:Key="WindowBrush" Color="#202020" />
@@ -169,6 +171,7 @@
         <Style TargetType="TabControl">
             <Setter Property="Background" Value="{DynamicResource WindowBrush}" />
             <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="TabStripPlacement" Value="Left" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabControl">
@@ -193,7 +196,10 @@
                                                    FontSize="12"
                                                    Margin="0,4,0,0" />
                                     </StackPanel>
-                                    <TabPanel IsItemsHost="True" />
+                                    <TabPanel IsItemsHost="True"
+                                              KeyboardNavigation.TabNavigation="Once"
+                                              HorizontalAlignment="Stretch"
+                                              VerticalAlignment="Top" />
                                 </DockPanel>
                             </Border>
 
@@ -212,10 +218,18 @@
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="{DynamicResource NavPadding}" />
             <Setter Property="Margin" Value="0,2,0,2" />
+            <Setter Property="Width" Value="200" />
+            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Grid Margin="{TemplateBinding Margin}">
+                        <Grid Width="{TemplateBinding Width}"
+                              MinHeight="{TemplateBinding MinHeight}"
+                              Margin="{TemplateBinding Margin}"
+                              SnapsToDevicePixels="True">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="4" />
                                 <ColumnDefinition Width="*" />
@@ -228,6 +242,7 @@
                                     Grid.Column="1"
                                     Background="Transparent"
                                     CornerRadius="5"
+                                    MinHeight="{TemplateBinding MinHeight}"
                                     Padding="{TemplateBinding Padding}">
                                 <ContentPresenter ContentSource="Header"
                                                   HorizontalAlignment="Left"
