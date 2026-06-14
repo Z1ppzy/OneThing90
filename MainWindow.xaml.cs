@@ -11,6 +11,7 @@ public partial class MainWindow : Window
     private readonly MainViewModel _viewModel;
     private readonly Forms.NotifyIcon _notifyIcon;
     private bool _allowClose;
+    private bool _hasShownTrayHint;
 
     public MainWindow()
     {
@@ -30,6 +31,7 @@ public partial class MainWindow : Window
         {
             e.Cancel = true;
             Hide();
+            ShowTrayHint();
             return;
         }
 
@@ -42,11 +44,11 @@ public partial class MainWindow : Window
     {
         var menu = new Forms.ContextMenuStrip();
 
-        menu.Items.Add("Open", null, (_, _) => Dispatcher.Invoke(ShowMainWindow));
-        menu.Items.Add("Start 90 minutes", null, (_, _) => Dispatcher.Invoke(_viewModel.StartDefaultSessionFromTray));
-        menu.Items.Add("Snooze 30 minutes", null, (_, _) => Dispatcher.Invoke(() => _viewModel.SnoozeFromTray(TimeSpan.FromMinutes(30))));
+        menu.Items.Add("Открыть", null, (_, _) => Dispatcher.Invoke(ShowMainWindow));
+        menu.Items.Add("Начать 90 минут", null, (_, _) => Dispatcher.Invoke(_viewModel.StartDefaultSessionFromTray));
+        menu.Items.Add("Отложить на 30 минут", null, (_, _) => Dispatcher.Invoke(() => _viewModel.SnoozeFromTray(TimeSpan.FromMinutes(30))));
         menu.Items.Add(new Forms.ToolStripSeparator());
-        menu.Items.Add("Exit", null, (_, _) => Dispatcher.Invoke(ExitApplication));
+        menu.Items.Add("Выйти", null, (_, _) => Dispatcher.Invoke(ExitApplication));
 
         var notifyIcon = new Forms.NotifyIcon
         {
@@ -66,6 +68,7 @@ public partial class MainWindow : Window
         if (WindowState == WindowState.Minimized && _viewModel.MinimizeToTray)
         {
             Hide();
+            ShowTrayHint();
         }
     }
 
@@ -84,6 +87,19 @@ public partial class MainWindow : Window
         Show();
         WindowState = WindowState.Normal;
         Activate();
+    }
+
+    private void ShowTrayHint()
+    {
+        if (_hasShownTrayHint)
+        {
+            return;
+        }
+
+        _hasShownTrayHint = true;
+        _notifyIcon.BalloonTipTitle = "OneThing90 работает в трее";
+        _notifyIcon.BalloonTipText = "Двойной клик по иконке рядом с часами вернет окно.";
+        _notifyIcon.ShowBalloonTip(5000);
     }
 
     private void ExitApplication()

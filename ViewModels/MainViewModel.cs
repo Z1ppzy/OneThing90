@@ -35,8 +35,8 @@ public sealed class MainViewModel : ObservableObject
     private bool _minimizeToTray;
     private bool _launchAtLogin;
     private string _timerDisplay = "90:00";
-    private string _timerSubtitle = "Ready when you are.";
-    private string _pauseButtonText = "Pause";
+    private string _timerSubtitle = "Готов к старту.";
+    private string _pauseButtonText = "Пауза";
     private double _timerProgress;
     private double _planProgress;
     private string _planDayText = string.Empty;
@@ -55,6 +55,7 @@ public sealed class MainViewModel : ObservableObject
         _store = store;
         _startupService = startupService;
         _state = _store.Load();
+        NormalizeLegacyDefaults();
         _state.Settings.LaunchAtLogin = _startupService.IsEnabled();
 
         Days = [];
@@ -273,19 +274,19 @@ public sealed class MainViewModel : ObservableObject
 
     private void SavePlan()
     {
-        var name = string.IsNullOrWhiteSpace(ThingName) ? "One important thing" : ThingName.Trim();
-        var reason = string.IsNullOrWhiteSpace(Why) ? "Show up for the work that matters." : Why.Trim();
+        var name = string.IsNullOrWhiteSpace(ThingName) ? "Главное дело" : ThingName.Trim();
+        var reason = string.IsNullOrWhiteSpace(Why) ? "Делать то, что важно, даже после тяжелого дня." : Why.Trim();
 
         if (!DateTime.TryParseExact(StartDateText.Trim(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var startedOn))
         {
-            ShowBanner("Check the start date", "Use the yyyy-mm-dd format so the 90-day path stays exact.");
+            ShowBanner("Проверь дату старта", "Используй формат yyyy-mm-dd, чтобы 90-дневный путь считался точно.");
             return;
         }
 
         if (!int.TryParse(TargetMinutesText.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var targetMinutes)
             || targetMinutes is < 5 or > 240)
         {
-            ShowBanner("Check the target", "Target minutes should be between 5 and 240.");
+            ShowBanner("Проверь цель", "Количество минут должно быть от 5 до 240.");
             return;
         }
 
@@ -297,27 +298,27 @@ public sealed class MainViewModel : ObservableObject
         _store.Save(_state);
         LoadEditableFields();
         RefreshAll();
-        ShowBanner("Plan saved", "Your one thing is locked in.");
+        ShowBanner("План сохранен", "Главное дело зафиксировано.");
     }
 
     private void SaveSettings()
     {
         if (!TryParseClock(ReminderStartText, out var start))
         {
-            ShowBanner("Check the reminder start", "Use a 24-hour time like 19:00.");
+            ShowBanner("Проверь начало напоминаний", "Используй 24-часовой формат, например 19:00.");
             return;
         }
 
         if (!TryParseClock(ReminderEndText, out var end))
         {
-            ShowBanner("Check the reminder end", "Use a 24-hour time like 23:00.");
+            ShowBanner("Проверь конец напоминаний", "Используй 24-часовой формат, например 23:00.");
             return;
         }
 
         if (!int.TryParse(ReminderIntervalText.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var interval)
             || interval is < 5 or > 240)
         {
-            ShowBanner("Check the reminder interval", "Use a number from 5 to 240 minutes.");
+            ShowBanner("Проверь интервал", "Укажи число от 5 до 240 минут.");
             return;
         }
 
@@ -338,13 +339,13 @@ public sealed class MainViewModel : ObservableObject
         {
             _state.Settings.LaunchAtLogin = _startupService.IsEnabled();
             LaunchAtLogin = _state.Settings.LaunchAtLogin;
-            ShowBanner("Startup setting was not changed", "Windows did not allow updating the login startup entry.");
+            ShowBanner("Автозапуск не изменен", "Windows не разрешила обновить запись автозапуска.");
         }
 
         _store.Save(_state);
         LoadEditableFields();
         RefreshAll();
-        ShowBanner("Settings saved", "Reminder rules are up to date.");
+        ShowBanner("Настройки сохранены", "Правила напоминаний обновлены.");
     }
 
     public void StartDefaultSessionFromTray()
@@ -361,7 +362,7 @@ public sealed class MainViewModel : ObservableObject
     {
         if (IsTimerRunning)
         {
-            ShowBanner("A session is already running", "Finish or pause the current block before starting another.");
+            ShowBanner("Сессия уже идет", "Заверши или поставь текущий блок на паузу перед новым стартом.");
             return;
         }
 
@@ -371,7 +372,7 @@ public sealed class MainViewModel : ObservableObject
         _elapsedBeforePause = TimeSpan.Zero;
         _isPaused = false;
         IsTimerRunning = true;
-        PauseButtonText = "Pause";
+        PauseButtonText = "Пауза";
         BannerVisibility = Visibility.Collapsed;
         _state.SnoozedUntilLocal = null;
         _store.Save(_state);
@@ -391,8 +392,8 @@ public sealed class MainViewModel : ObservableObject
         {
             _currentRunStartedAtLocal = DateTime.Now;
             _isPaused = false;
-            PauseButtonText = "Pause";
-            TimerSubtitle = "Focus block is running.";
+            PauseButtonText = "Пауза";
+            TimerSubtitle = "Фокус-сессия идет.";
             _sessionTimer.Start();
             return;
         }
@@ -400,8 +401,8 @@ public sealed class MainViewModel : ObservableObject
         _elapsedBeforePause = GetElapsed();
         _currentRunStartedAtLocal = null;
         _isPaused = true;
-        PauseButtonText = "Resume";
-        TimerSubtitle = "Paused. Keep the block alive.";
+        PauseButtonText = "Продолжить";
+        TimerSubtitle = "Пауза. Сессию можно продолжить.";
         _sessionTimer.Stop();
         TickSession();
     }
@@ -421,7 +422,7 @@ public sealed class MainViewModel : ObservableObject
         if (!IsTimerRunning)
         {
             TimerDisplay = $"{_state.Plan.TargetMinutes:00}:00";
-            TimerSubtitle = "Ready when you are.";
+            TimerSubtitle = "Готов к старту.";
             TimerProgress = 0;
             return;
         }
@@ -437,8 +438,8 @@ public sealed class MainViewModel : ObservableObject
         TimerDisplay = FormatDuration(remaining);
         TimerProgress = Math.Clamp(elapsed.TotalSeconds / _sessionGoal.TotalSeconds * 100, 0, 100);
         TimerSubtitle = _isPaused
-            ? "Paused. Resume when you are ready."
-            : $"Working on {_state.Plan.ThingName}.";
+            ? "Пауза. Продолжай, когда будешь готов."
+            : $"В работе: {_state.Plan.ThingName}.";
     }
 
     private void CompleteSession(bool wasAutomatic)
@@ -451,7 +452,7 @@ public sealed class MainViewModel : ObservableObject
         _currentRunStartedAtLocal = null;
         _elapsedBeforePause = TimeSpan.Zero;
         _isPaused = false;
-        PauseButtonText = "Pause";
+        PauseButtonText = "Пауза";
 
         _state.Sessions.Add(new FocusSession
         {
@@ -467,12 +468,12 @@ public sealed class MainViewModel : ObservableObject
 
         if (minutes >= _state.Plan.TargetMinutes)
         {
-            ShowBanner("Today is done", "The 90-minute block has been logged.");
-            NotificationRequested?.Invoke(this, new NotificationRequest("OneThing90", "Today is done. Your one thing moved forward."));
+            ShowBanner("Сегодня закрыто", "90-минутная сессия записана.");
+            NotificationRequested?.Invoke(this, new NotificationRequest("OneThing90", "Сегодня закрыто. Главное дело сдвинулось вперед."));
         }
         else
         {
-            ShowBanner("Partial session saved", $"{minutes} minute(s) logged. You can still finish today.");
+            ShowBanner("Частичная сессия сохранена", $"Записано минут: {minutes}. Сегодня еще можно добить цель.");
         }
 
         TickSession();
@@ -498,7 +499,7 @@ public sealed class MainViewModel : ObservableObject
         _state.SnoozedUntilLocal = DateTime.Now.Add(duration);
         _store.Save(_state);
         RefreshAll();
-        ShowBanner("Snoozed", $"Next nudge after {_state.SnoozedUntilLocal:HH:mm}.");
+        ShowBanner("Отложено", $"Следующее напоминание после {_state.SnoozedUntilLocal:HH:mm}.");
     }
 
     private void SnoozeUntilTomorrow()
@@ -507,7 +508,7 @@ public sealed class MainViewModel : ObservableObject
         _state.SnoozedUntilLocal = tomorrow;
         _store.Save(_state);
         RefreshAll();
-        ShowBanner("Snoozed for today", $"Next nudge tomorrow at {tomorrow:HH:mm}.");
+        ShowBanner("Сегодня пропущено", $"Следующее напоминание завтра в {tomorrow:HH:mm}.");
     }
 
     private void CheckReminder(DateTime now)
@@ -522,8 +523,8 @@ public sealed class MainViewModel : ObservableObject
         _state.LastReminderLocal = now;
         _store.Save(_state);
 
-        var title = "Your one thing is idle";
-        var message = $"{_state.Plan.ThingName} has no full session today. Start {_state.Plan.TargetMinutes} minutes?";
+        var title = "Главное дело простаивает";
+        var message = $"Сегодня еще нет полной сессии по делу: {_state.Plan.ThingName}. Запустить {_state.Plan.TargetMinutes} минут?";
         ShowBanner(title, message);
         NotificationRequested?.Invoke(this, new NotificationRequest("OneThing90", message));
     }
@@ -573,21 +574,21 @@ public sealed class MainViewModel : ObservableObject
 
         PlanProgress = Math.Clamp(completedDays / (double)_state.Plan.DurationDays * 100, 0, 100);
         PlanDayText = dayNumber < 1
-            ? $"Starts in {Math.Abs(dayNumber) + 1} day(s)"
+            ? $"Старт через {Math.Abs(dayNumber) + 1} дн."
             : dayNumber > _state.Plan.DurationDays
-                ? "90-day window complete"
-                : $"Day {dayNumber} of {_state.Plan.DurationDays}";
+                ? "90-дневный путь завершен"
+                : $"День {dayNumber} из {_state.Plan.DurationDays}";
 
-        TodayMinutesText = $"{todayMinutes} / {_state.Plan.TargetMinutes} min";
+        TodayMinutesText = $"{todayMinutes} / {_state.Plan.TargetMinutes} мин";
         DaysCompletedText = $"{completedDays} / {_state.Plan.DurationDays}";
-        StreakText = $"{streak} day{(streak == 1 ? string.Empty : "s")}";
-        DaysRemainingText = $"{Math.Max(0, _state.Plan.DurationDays - completedDays)} left";
+        StreakText = $"{streak} дн. подряд";
+        DaysRemainingText = $"{Math.Max(0, _state.Plan.DurationDays - completedDays)} осталось";
 
         TodayStatusText = todayMinutes >= _state.Plan.TargetMinutes
-            ? "Full session logged today."
+            ? "Полная сессия сегодня записана."
             : todayMinutes > 0
-                ? "Partial progress today. Finish the block."
-                : "No session today yet.";
+                ? "Есть частичный прогресс. Добей блок."
+                : "Сегодня сессии еще не было.";
     }
 
     private void RefreshDays()
@@ -604,9 +605,9 @@ public sealed class MainViewModel : ObservableObject
             Days.Add(new DayCellViewModel
             {
                 Number = i + 1,
-                DateText = date.ToString("MMM d", CultureInfo.InvariantCulture),
+                DateText = date.ToString("dd.MM", CultureInfo.InvariantCulture),
                 Status = status,
-                ToolTip = $"{date:yyyy-MM-dd}: {minutes} min"
+                ToolTip = $"{date:yyyy-MM-dd}: {minutes} мин"
             });
         }
     }
@@ -615,26 +616,48 @@ public sealed class MainViewModel : ObservableObject
     {
         if (!_state.Settings.RemindersEnabled)
         {
-            ReminderStatusText = "Reminders are off.";
+            ReminderStatusText = "Напоминания выключены.";
             return;
         }
 
         if (IsDayComplete(DateTime.Today))
         {
-            ReminderStatusText = "No nudges needed. Today is complete.";
+            ReminderStatusText = "Напоминать не нужно. Сегодняшняя цель закрыта.";
             return;
         }
 
         if (_state.SnoozedUntilLocal is { } snoozedUntil && snoozedUntil > DateTime.Now)
         {
-            ReminderStatusText = $"Snoozed until {snoozedUntil:HH:mm}.";
+            ReminderStatusText = $"Отложено до {snoozedUntil:HH:mm}.";
             return;
         }
 
         var window = $"{FormatClock(_state.Settings.ReminderStartHour, _state.Settings.ReminderStartMinute)}-{FormatClock(_state.Settings.ReminderEndHour, _state.Settings.ReminderEndMinute)}";
         ReminderStatusText = IsInsideReminderWindow(DateTime.Now.TimeOfDay)
-            ? $"Watching now. Nudge window: {window}."
-            : $"Next nudge window: {window}.";
+            ? $"Сейчас слежу. Окно напоминаний: {window}."
+            : $"Следующее окно напоминаний: {window}.";
+    }
+
+    private void NormalizeLegacyDefaults()
+    {
+        var changed = false;
+
+        if (_state.Plan.ThingName == "One important thing")
+        {
+            _state.Plan.ThingName = "Главное дело";
+            changed = true;
+        }
+
+        if (_state.Plan.Why is "Show up for the work that matters." or "Build it for 90 focused days.")
+        {
+            _state.Plan.Why = "Делать то, что важно, даже после тяжелого дня.";
+            changed = true;
+        }
+
+        if (changed)
+        {
+            _store.Save(_state);
+        }
     }
 
     private int CountCompletedDays()
