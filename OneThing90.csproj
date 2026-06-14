@@ -12,4 +12,8 @@
     <RootNamespace>OneThing90</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Resource Include="Assets\OneThing90.png" />
+  </ItemGroup>
+
 </Project>
