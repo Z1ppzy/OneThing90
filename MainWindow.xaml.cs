@@ -1,5 +1,8 @@
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using Microsoft.Win32;
 using Forms = System.Windows.Forms;
 using OneThing90.Services;
@@ -24,6 +27,7 @@ public partial class MainWindow : Window
         _viewModel.NotificationRequested += OnNotificationRequested;
         _viewModel.AppearanceChanged += (_, _) => ApplyAppearance();
         ApplyAppearance();
+        ApplyWindowIcon();
 
         _notifyIcon = CreateNotifyIcon();
         StateChanged += OnStateChanged;
@@ -56,7 +60,7 @@ public partial class MainWindow : Window
 
         var notifyIcon = new Forms.NotifyIcon
         {
-            Icon = System.Drawing.SystemIcons.Application,
+            Icon = LoadAppIcon(),
             Text = "OneThing90",
             ContextMenuStrip = menu,
             Visible = true
@@ -65,6 +69,30 @@ public partial class MainWindow : Window
         notifyIcon.DoubleClick += (_, _) => Dispatcher.Invoke(ShowMainWindow);
         notifyIcon.BalloonTipClicked += (_, _) => Dispatcher.Invoke(ShowMainWindow);
         return notifyIcon;
+    }
+
+    private void ApplyWindowIcon()
+    {
+        using var icon = LoadAppIcon();
+        Icon = Imaging.CreateBitmapSourceFromHIcon(
+            icon.Handle,
+            Int32Rect.Empty,
+            BitmapSizeOptions.FromWidthAndHeight(32, 32));
+    }
+
+    private static System.Drawing.Icon LoadAppIcon()
+    {
+        var processPath = Environment.ProcessPath;
+        if (!string.IsNullOrWhiteSpace(processPath) && File.Exists(processPath))
+        {
+            var icon = System.Drawing.Icon.ExtractAssociatedIcon(processPath);
+            if (icon is not null)
+            {
+                return icon;
+            }
+        }
+
+        return (System.Drawing.Icon)System.Drawing.SystemIcons.Application.Clone();
     }
 
     private void OnStateChanged(object? sender, EventArgs e)
