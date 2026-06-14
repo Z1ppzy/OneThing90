@@ -103,6 +103,7 @@ public partial class MainWindow : Window
         };
 
         ApplyBaseTheme(useLight);
+        ApplyCustomWindowColorIfNeeded();
         ApplyAccent(_viewModel.AccentColor, useLight);
         ApplyDensity(_viewModel.DensityMode);
     }
@@ -165,6 +166,7 @@ public partial class MainWindow : Window
     {
         var (primary, primaryDark, primarySoft) = accent switch
         {
+            "Custom" when TryParseColor(_viewModel.CustomAccentHex, out var customColor) => BuildCustomAccent(customColor, useLight),
             "Blue" => ("#2563EB", "#1D4ED8", useLight ? "#E8F0FF" : "#17233F"),
             "Green" => ("#16A34A", "#15803D", useLight ? "#E9F8EE" : "#172F20"),
             "Violet" => ("#7C3AED", "#6D28D9", useLight ? "#F0EAFE" : "#241B3A"),
@@ -176,6 +178,42 @@ public partial class MainWindow : Window
         SetBrush("PrimaryBrush", primary);
         SetBrush("PrimaryDarkBrush", primaryDark);
         SetBrush("PrimarySoftBrush", primarySoft);
+    }
+
+    private void ApplyCustomWindowColorIfNeeded()
+    {
+        if (!_viewModel.UseCustomWindowColor || !TryParseColor(_viewModel.CustomWindowHex, out var baseColor))
+        {
+            return;
+        }
+
+        var isLight = GetLuminance(baseColor) >= 0.56;
+        var text = isLight ? "#1F1F1F" : "#F3F3F3";
+        var muted = isLight ? "#666666" : "#C7C7C7";
+
+        SetBrush("WindowBrush", ToHex(baseColor));
+        SetBrush("SidebarBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.48) : Blend(baseColor, Media.Colors.Black, 0.28)));
+        SetBrush("SurfaceBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.68) : Blend(baseColor, Media.Colors.White, 0.08)));
+        SetBrush("SurfaceAltBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.82) : Blend(baseColor, Media.Colors.White, 0.13)));
+        SetBrush("InputBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.86) : Blend(baseColor, Media.Colors.Black, 0.18)));
+        SetBrush("ButtonBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.76) : Blend(baseColor, Media.Colors.White, 0.12)));
+        SetBrush("ButtonHoverBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.60) : Blend(baseColor, Media.Colors.White, 0.20)));
+        SetBrush("ButtonPressedBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.Black, 0.08) : Blend(baseColor, Media.Colors.Black, 0.18)));
+        SetBrush("LineBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.Black, 0.18) : Blend(baseColor, Media.Colors.White, 0.18)));
+        SetBrush("TextBrush", text);
+        SetBrush("MutedTextBrush", muted);
+        SetBrush("CalendarEmptyBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.70) : Blend(baseColor, Media.Colors.White, 0.10)));
+        SetBrush("CalendarFutureBrush", ToHex(isLight ? Blend(baseColor, Media.Colors.White, 0.62) : Blend(baseColor, Media.Colors.Black, 0.14)));
+    }
+
+    private static (string Primary, string PrimaryDark, string PrimarySoft) BuildCustomAccent(Media.Color color, bool useLight)
+    {
+        var primaryDark = Blend(color, Media.Colors.Black, 0.22);
+        var primarySoft = useLight
+            ? Blend(color, Media.Colors.White, 0.86)
+            : Blend(color, Media.Colors.Black, 0.68);
+
+        return (ToHex(color), ToHex(primaryDark), ToHex(primarySoft));
     }
 
     private void ApplyDensity(string density)
@@ -204,6 +242,58 @@ public partial class MainWindow : Window
     private void SetBrush(string key, string color)
     {
         Resources[key] = new Media.SolidColorBrush((Media.Color)Media.ColorConverter.ConvertFromString(color));
+    }
+
+    private static bool TryParseColor(string? value, out Media.Color color)
+    {
+        color = default;
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var hex = value.Trim();
+        if (!hex.StartsWith('#'))
+        {
+            hex = $"#{hex}";
+        }
+
+        try
+        {
+            color = (Media.Color)Media.ColorConverter.ConvertFromString(hex);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static Media.Color Blend(Media.Color from, Media.Color to, double amount)
+    {
+        amount = Math.Clamp(amount, 0, 1);
+        return Media.Color.FromRgb(
+            (byte)Math.Round(from.R + (to.R - from.R) * amount),
+            (byte)Math.Round(from.G + (to.G - from.G) * amount),
+            (byte)Math.Round(from.B + (to.B - from.B) * amount));
+    }
+
+    private static double GetLuminance(Media.Color color)
+    {
+        static double Channel(byte value)
+        {
+            var normalized = value / 255.0;
+            return normalized <= 0.03928
+                ? normalized / 12.92
+                : Math.Pow((normalized + 0.055) / 1.055, 2.4);
+        }
+
+        return 0.2126 * Channel(color.R) + 0.7152 * Channel(color.G) + 0.0722 * Channel(color.B);
+    }
+
+    private static string ToHex(Media.Color color)
+    {
+        return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
     }
 
     private void ShowTrayHint()

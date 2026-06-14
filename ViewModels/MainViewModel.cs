@@ -37,6 +37,9 @@ public sealed class MainViewModel : ObservableObject
     private string _themeMode = "System";
     private string _accentColor = "Teal";
     private string _densityMode = "Comfortable";
+    private string _customAccentHex = "#0D9488";
+    private bool _useCustomWindowColor;
+    private string _customWindowHex = "#202020";
     private string _timerDisplay = "90:00";
     private string _timerSubtitle = "Готов к старту.";
     private string _pauseButtonText = "Пауза";
@@ -68,6 +71,8 @@ public sealed class MainViewModel : ObservableObject
         SetThemeCommand = new RelayCommand(parameter => SetTheme(parameter as string));
         SetAccentCommand = new RelayCommand(parameter => SetAccent(parameter as string));
         SetDensityCommand = new RelayCommand(parameter => SetDensity(parameter as string));
+        ApplyCustomColorsCommand = new RelayCommand(ApplyCustomColors);
+        ResetCustomColorsCommand = new RelayCommand(ResetCustomColors);
         StartFocusCommand = new RelayCommand(() => StartSession(_state.Plan.TargetMinutes));
         StartRescueCommand = new RelayCommand(() => StartSession(15));
         PauseResumeCommand = new RelayCommand(PauseOrResume);
@@ -100,6 +105,8 @@ public sealed class MainViewModel : ObservableObject
     public ICommand SetThemeCommand { get; }
     public ICommand SetAccentCommand { get; }
     public ICommand SetDensityCommand { get; }
+    public ICommand ApplyCustomColorsCommand { get; }
+    public ICommand ResetCustomColorsCommand { get; }
     public ICommand StartFocusCommand { get; }
     public ICommand StartRescueCommand { get; }
     public ICommand PauseResumeCommand { get; }
@@ -186,6 +193,24 @@ public sealed class MainViewModel : ObservableObject
     {
         get => _densityMode;
         set => SetProperty(ref _densityMode, value);
+    }
+
+    public string CustomAccentHex
+    {
+        get => _customAccentHex;
+        set => SetProperty(ref _customAccentHex, value);
+    }
+
+    public bool UseCustomWindowColor
+    {
+        get => _useCustomWindowColor;
+        set => SetProperty(ref _useCustomWindowColor, value);
+    }
+
+    public string CustomWindowHex
+    {
+        get => _customWindowHex;
+        set => SetProperty(ref _customWindowHex, value);
     }
 
     public bool IsTimerRunning
@@ -296,8 +321,11 @@ public sealed class MainViewModel : ObservableObject
         MinimizeToTray = settings.MinimizeToTray;
         LaunchAtLogin = settings.LaunchAtLogin;
         ThemeMode = NormalizeOption(settings.ThemeMode, ["System", "Dark", "Light"], "System");
-        AccentColor = NormalizeOption(settings.AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose"], "Teal");
+        AccentColor = NormalizeOption(settings.AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose", "Custom"], "Teal");
         DensityMode = NormalizeOption(settings.DensityMode, ["Compact", "Comfortable", "Spacious"], "Comfortable");
+        CustomAccentHex = TryNormalizeHex(settings.CustomAccentHex, out var customAccentHex) ? customAccentHex : "#0D9488";
+        UseCustomWindowColor = settings.UseCustomWindowColor;
+        CustomWindowHex = TryNormalizeHex(settings.CustomWindowHex, out var customWindowHex) ? customWindowHex : "#202020";
         ReminderStartText = FormatClock(settings.ReminderStartHour, settings.ReminderStartMinute);
         ReminderEndText = FormatClock(settings.ReminderEndHour, settings.ReminderEndMinute);
         ReminderIntervalText = settings.ReminderIntervalMinutes.ToString(CultureInfo.InvariantCulture);
@@ -357,8 +385,11 @@ public sealed class MainViewModel : ObservableObject
         _state.Settings.MinimizeToTray = MinimizeToTray;
         _state.Settings.LaunchAtLogin = LaunchAtLogin;
         _state.Settings.ThemeMode = NormalizeOption(ThemeMode, ["System", "Dark", "Light"], "System");
-        _state.Settings.AccentColor = NormalizeOption(AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose"], "Teal");
+        _state.Settings.AccentColor = NormalizeOption(AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose", "Custom"], "Teal");
         _state.Settings.DensityMode = NormalizeOption(DensityMode, ["Compact", "Comfortable", "Spacious"], "Comfortable");
+        _state.Settings.CustomAccentHex = TryNormalizeHex(CustomAccentHex, out var customAccentHex) ? customAccentHex : "#0D9488";
+        _state.Settings.UseCustomWindowColor = UseCustomWindowColor;
+        _state.Settings.CustomWindowHex = TryNormalizeHex(CustomWindowHex, out var customWindowHex) ? customWindowHex : "#202020";
         _state.Settings.ReminderStartHour = start.Hours;
         _state.Settings.ReminderStartMinute = start.Minutes;
         _state.Settings.ReminderEndHour = end.Hours;
@@ -393,7 +424,7 @@ public sealed class MainViewModel : ObservableObject
 
     private void SetAccent(string? accent)
     {
-        var normalizedAccent = NormalizeOption(accent, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose"], "Teal");
+        var normalizedAccent = NormalizeOption(accent, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose", "Custom"], "Teal");
         AccentColor = normalizedAccent;
         _state.Settings.AccentColor = normalizedAccent;
         SaveAppearanceOnly();
@@ -411,6 +442,48 @@ public sealed class MainViewModel : ObservableObject
     {
         _store.Save(_state);
         AppearanceChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void ApplyCustomColors()
+    {
+        if (!TryNormalizeHex(CustomAccentHex, out var accentHex))
+        {
+            ShowBanner("Проверь цвет акцента", "Укажи HEX в формате #0D9488 или 0D9488.");
+            return;
+        }
+
+        if (UseCustomWindowColor && !TryNormalizeHex(CustomWindowHex, out _))
+        {
+            ShowBanner("Проверь цвет фона", "Укажи HEX в формате #202020 или 202020.");
+            return;
+        }
+
+        CustomAccentHex = accentHex;
+        AccentColor = "Custom";
+        _state.Settings.CustomAccentHex = accentHex;
+        _state.Settings.AccentColor = "Custom";
+        _state.Settings.UseCustomWindowColor = UseCustomWindowColor;
+        _state.Settings.CustomWindowHex = TryNormalizeHex(CustomWindowHex, out var windowHex) ? windowHex : "#202020";
+        CustomWindowHex = _state.Settings.CustomWindowHex;
+
+        SaveAppearanceOnly();
+        ShowBanner("Цвета применены", "Пользовательская палитра сохранена.");
+    }
+
+    private void ResetCustomColors()
+    {
+        AccentColor = "Teal";
+        CustomAccentHex = "#0D9488";
+        UseCustomWindowColor = false;
+        CustomWindowHex = "#202020";
+
+        _state.Settings.AccentColor = AccentColor;
+        _state.Settings.CustomAccentHex = CustomAccentHex;
+        _state.Settings.UseCustomWindowColor = UseCustomWindowColor;
+        _state.Settings.CustomWindowHex = CustomWindowHex;
+
+        SaveAppearanceOnly();
+        ShowBanner("Цвета сброшены", "Вернулась стандартная палитра OneThing90.");
     }
 
     public void StartDefaultSessionFromTray()
@@ -835,6 +908,30 @@ public sealed class MainViewModel : ObservableObject
     {
         return allowedValues.FirstOrDefault(option => string.Equals(option, value, StringComparison.OrdinalIgnoreCase))
             ?? fallback;
+    }
+
+    private static bool TryNormalizeHex(string? value, out string normalized)
+    {
+        normalized = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return false;
+        }
+
+        var hex = value.Trim();
+        if (hex.StartsWith('#'))
+        {
+            hex = hex[1..];
+        }
+
+        if (hex.Length != 6 || !hex.All(Uri.IsHexDigit))
+        {
+            return false;
+        }
+
+        normalized = $"#{hex.ToUpperInvariant()}";
+        return true;
     }
 
     private void ShowBanner(string title, string message)
