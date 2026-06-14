@@ -65,6 +65,9 @@ public sealed class MainViewModel : ObservableObject
 
         SavePlanCommand = new RelayCommand(SavePlan);
         SaveSettingsCommand = new RelayCommand(SaveSettings);
+        SetThemeCommand = new RelayCommand(parameter => SetTheme(parameter as string));
+        SetAccentCommand = new RelayCommand(parameter => SetAccent(parameter as string));
+        SetDensityCommand = new RelayCommand(parameter => SetDensity(parameter as string));
         StartFocusCommand = new RelayCommand(() => StartSession(_state.Plan.TargetMinutes));
         StartRescueCommand = new RelayCommand(() => StartSession(15));
         PauseResumeCommand = new RelayCommand(PauseOrResume);
@@ -94,6 +97,9 @@ public sealed class MainViewModel : ObservableObject
 
     public ICommand SavePlanCommand { get; }
     public ICommand SaveSettingsCommand { get; }
+    public ICommand SetThemeCommand { get; }
+    public ICommand SetAccentCommand { get; }
+    public ICommand SetDensityCommand { get; }
     public ICommand StartFocusCommand { get; }
     public ICommand StartRescueCommand { get; }
     public ICommand PauseResumeCommand { get; }
@@ -375,6 +381,36 @@ public sealed class MainViewModel : ObservableObject
         RefreshAll();
         AppearanceChanged?.Invoke(this, EventArgs.Empty);
         ShowBanner("Настройки сохранены", "Правила напоминаний обновлены.");
+    }
+
+    private void SetTheme(string? theme)
+    {
+        var normalizedTheme = NormalizeOption(theme, ["System", "Dark", "Light"], "System");
+        ThemeMode = normalizedTheme;
+        _state.Settings.ThemeMode = normalizedTheme;
+        SaveAppearanceOnly();
+    }
+
+    private void SetAccent(string? accent)
+    {
+        var normalizedAccent = NormalizeOption(accent, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose"], "Teal");
+        AccentColor = normalizedAccent;
+        _state.Settings.AccentColor = normalizedAccent;
+        SaveAppearanceOnly();
+    }
+
+    private void SetDensity(string? density)
+    {
+        var normalizedDensity = NormalizeOption(density, ["Compact", "Comfortable", "Spacious"], "Comfortable");
+        DensityMode = normalizedDensity;
+        _state.Settings.DensityMode = normalizedDensity;
+        SaveAppearanceOnly();
+    }
+
+    private void SaveAppearanceOnly()
+    {
+        _store.Save(_state);
+        AppearanceChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public void StartDefaultSessionFromTray()

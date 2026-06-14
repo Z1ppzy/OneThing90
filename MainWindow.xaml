@@ -157,6 +157,21 @@
             <Setter Property="Background" Value="Transparent" />
         </Style>
 
+        <Style x:Key="QuickButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="MinHeight" Value="28" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="SwatchButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+            <Setter Property="MinHeight" Value="24" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
+        </Style>
+
         <Style TargetType="CheckBox">
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
             <Setter Property="Margin" Value="0,8,0,0" />
@@ -196,6 +211,75 @@
                                                    FontSize="12"
                                                    Margin="0,4,0,0" />
                                     </StackPanel>
+                                    <Border DockPanel.Dock="Bottom"
+                                            Background="{DynamicResource SurfaceBrush}"
+                                            BorderBrush="{DynamicResource LineBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Padding="10"
+                                            Margin="0,16,0,0">
+                                        <StackPanel>
+                                            <TextBlock Text="Быстрый вид"
+                                                       Foreground="{DynamicResource TextBrush}"
+                                                       FontSize="12"
+                                                       FontWeight="SemiBold"
+                                                       Margin="0,0,0,8" />
+                                            <UniformGrid Columns="3" Margin="0,0,0,8">
+                                                <Button Content="Сист"
+                                                        Command="{Binding SetThemeCommand}"
+                                                        CommandParameter="System"
+                                                        Style="{StaticResource QuickButton}"
+                                                        Margin="0,0,4,0" />
+                                                <Button Content="Тем"
+                                                        Command="{Binding SetThemeCommand}"
+                                                        CommandParameter="Dark"
+                                                        Style="{StaticResource QuickButton}"
+                                                        Margin="0,0,4,0" />
+                                                <Button Content="Свет"
+                                                        Command="{Binding SetThemeCommand}"
+                                                        CommandParameter="Light"
+                                                        Style="{StaticResource QuickButton}" />
+                                            </UniformGrid>
+                                            <WrapPanel>
+                                                <Button ToolTip="Бирюзовый"
+                                                        Command="{Binding SetAccentCommand}"
+                                                        CommandParameter="Teal"
+                                                        Style="{StaticResource SwatchButton}"
+                                                        Background="#0D9488"
+                                                        Margin="0,0,6,6" />
+                                                <Button ToolTip="Синий"
+                                                        Command="{Binding SetAccentCommand}"
+                                                        CommandParameter="Blue"
+                                                        Style="{StaticResource SwatchButton}"
+                                                        Background="#2563EB"
+                                                        Margin="0,0,6,6" />
+                                                <Button ToolTip="Зеленый"
+                                                        Command="{Binding SetAccentCommand}"
+                                                        CommandParameter="Green"
+                                                        Style="{StaticResource SwatchButton}"
+                                                        Background="#16A34A"
+                                                        Margin="0,0,6,6" />
+                                                <Button ToolTip="Фиолетовый"
+                                                        Command="{Binding SetAccentCommand}"
+                                                        CommandParameter="Violet"
+                                                        Style="{StaticResource SwatchButton}"
+                                                        Background="#7C3AED"
+                                                        Margin="0,0,6,6" />
+                                                <Button ToolTip="Янтарный"
+                                                        Command="{Binding SetAccentCommand}"
+                                                        CommandParameter="Amber"
+                                                        Style="{StaticResource SwatchButton}"
+                                                        Background="#D97706"
+                                                        Margin="0,0,6,6" />
+                                                <Button ToolTip="Розовый"
+                                                        Command="{Binding SetAccentCommand}"
+                                                        CommandParameter="Rose"
+                                                        Style="{StaticResource SwatchButton}"
+                                                        Background="#E11D48"
+                                                        Margin="0,0,0,6" />
+                                            </WrapPanel>
+                                        </StackPanel>
+                                    </Border>
                                     <TabPanel IsItemsHost="True"
                                               KeyboardNavigation.TabNavigation="Once"
                                               HorizontalAlignment="Stretch"
