@@ -34,6 +34,9 @@ public sealed class MainViewModel : ObservableObject
     private bool _remindersEnabled;
     private bool _minimizeToTray;
     private bool _launchAtLogin;
+    private string _themeMode = "System";
+    private string _accentColor = "Teal";
+    private string _densityMode = "Comfortable";
     private string _timerDisplay = "90:00";
     private string _timerSubtitle = "Готов к старту.";
     private string _pauseButtonText = "Пауза";
@@ -85,6 +88,7 @@ public sealed class MainViewModel : ObservableObject
     }
 
     public event EventHandler<NotificationRequest>? NotificationRequested;
+    public event EventHandler? AppearanceChanged;
 
     public ObservableCollection<DayCellViewModel> Days { get; }
 
@@ -158,6 +162,24 @@ public sealed class MainViewModel : ObservableObject
     {
         get => _launchAtLogin;
         set => SetProperty(ref _launchAtLogin, value);
+    }
+
+    public string ThemeMode
+    {
+        get => _themeMode;
+        set => SetProperty(ref _themeMode, value);
+    }
+
+    public string AccentColor
+    {
+        get => _accentColor;
+        set => SetProperty(ref _accentColor, value);
+    }
+
+    public string DensityMode
+    {
+        get => _densityMode;
+        set => SetProperty(ref _densityMode, value);
     }
 
     public bool IsTimerRunning
@@ -267,6 +289,9 @@ public sealed class MainViewModel : ObservableObject
         RemindersEnabled = settings.RemindersEnabled;
         MinimizeToTray = settings.MinimizeToTray;
         LaunchAtLogin = settings.LaunchAtLogin;
+        ThemeMode = NormalizeOption(settings.ThemeMode, ["System", "Dark", "Light"], "System");
+        AccentColor = NormalizeOption(settings.AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose"], "Teal");
+        DensityMode = NormalizeOption(settings.DensityMode, ["Compact", "Comfortable", "Spacious"], "Comfortable");
         ReminderStartText = FormatClock(settings.ReminderStartHour, settings.ReminderStartMinute);
         ReminderEndText = FormatClock(settings.ReminderEndHour, settings.ReminderEndMinute);
         ReminderIntervalText = settings.ReminderIntervalMinutes.ToString(CultureInfo.InvariantCulture);
@@ -325,6 +350,9 @@ public sealed class MainViewModel : ObservableObject
         _state.Settings.RemindersEnabled = RemindersEnabled;
         _state.Settings.MinimizeToTray = MinimizeToTray;
         _state.Settings.LaunchAtLogin = LaunchAtLogin;
+        _state.Settings.ThemeMode = NormalizeOption(ThemeMode, ["System", "Dark", "Light"], "System");
+        _state.Settings.AccentColor = NormalizeOption(AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose"], "Teal");
+        _state.Settings.DensityMode = NormalizeOption(DensityMode, ["Compact", "Comfortable", "Spacious"], "Comfortable");
         _state.Settings.ReminderStartHour = start.Hours;
         _state.Settings.ReminderStartMinute = start.Minutes;
         _state.Settings.ReminderEndHour = end.Hours;
@@ -345,6 +373,7 @@ public sealed class MainViewModel : ObservableObject
         _store.Save(_state);
         LoadEditableFields();
         RefreshAll();
+        AppearanceChanged?.Invoke(this, EventArgs.Empty);
         ShowBanner("Настройки сохранены", "Правила напоминаний обновлены.");
     }
 
@@ -764,6 +793,12 @@ public sealed class MainViewModel : ObservableObject
     {
         var totalMinutes = Math.Max(0, (int)value.TotalMinutes);
         return $"{totalMinutes:00}:{value.Seconds:00}";
+    }
+
+    private static string NormalizeOption(string? value, string[] allowedValues, string fallback)
+    {
+        return allowedValues.FirstOrDefault(option => string.Equals(option, value, StringComparison.OrdinalIgnoreCase))
+            ?? fallback;
     }
 
     private void ShowBanner(string title, string message)

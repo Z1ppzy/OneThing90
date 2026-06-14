@@ -10,65 +10,134 @@
         MinWidth="980"
         MinHeight="680"
         WindowStartupLocation="CenterScreen"
-        Background="#0F1115">
+        Background="{DynamicResource WindowBrush}">
     <Window.Resources>
-        <SolidColorBrush x:Key="PanelBrush" Color="#171A20" />
-        <SolidColorBrush x:Key="PanelSoftBrush" Color="#1F242C" />
-        <SolidColorBrush x:Key="LineBrush" Color="#303640" />
-        <SolidColorBrush x:Key="TextBrush" Color="#F4F1EA" />
-        <SolidColorBrush x:Key="MutedTextBrush" Color="#A7ADB7" />
-        <SolidColorBrush x:Key="PrimaryBrush" Color="#2DD4BF" />
+        <SolidColorBrush x:Key="WindowBrush" Color="#202020" />
+        <SolidColorBrush x:Key="SidebarBrush" Color="#181818" />
+        <SolidColorBrush x:Key="SurfaceBrush" Color="#252526" />
+        <SolidColorBrush x:Key="SurfaceAltBrush" Color="#2D2D30" />
+        <SolidColorBrush x:Key="InputBrush" Color="#1E1E1E" />
+        <SolidColorBrush x:Key="ButtonBrush" Color="#2D2D30" />
+        <SolidColorBrush x:Key="ButtonHoverBrush" Color="#3E3E42" />
+        <SolidColorBrush x:Key="ButtonPressedBrush" Color="#242426" />
+        <SolidColorBrush x:Key="LineBrush" Color="#3F3F46" />
+        <SolidColorBrush x:Key="TextBrush" Color="#F3F3F3" />
+        <SolidColorBrush x:Key="MutedTextBrush" Color="#C7C7C7" />
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#0D9488" />
         <SolidColorBrush x:Key="PrimaryDarkBrush" Color="#0F766E" />
+        <SolidColorBrush x:Key="PrimarySoftBrush" Color="#162E2B" />
+        <SolidColorBrush x:Key="BannerBrush" Color="#332A19" />
+        <SolidColorBrush x:Key="BannerLineBrush" Color="#8A621D" />
+        <SolidColorBrush x:Key="BannerTitleBrush" Color="#FFE8B0" />
+        <SolidColorBrush x:Key="BannerTextBrush" Color="#F8D99C" />
+        <SolidColorBrush x:Key="CalendarEmptyBrush" Color="#303036" />
+        <SolidColorBrush x:Key="CalendarFutureBrush" Color="#2A2A2F" />
+        <SolidColorBrush x:Key="CalendarCompleteBrush" Color="#16A34A" />
+        <SolidColorBrush x:Key="CalendarCompleteLineBrush" Color="#86EFAC" />
+        <SolidColorBrush x:Key="CalendarTodayBrush" Color="#B45309" />
+        <SolidColorBrush x:Key="CalendarTodayLineBrush" Color="#FBBF24" />
+        <SolidColorBrush x:Key="CalendarPartialBrush" Color="#7C3AED" />
+        <SolidColorBrush x:Key="CalendarPartialLineBrush" Color="#C4B5FD" />
+        <SolidColorBrush x:Key="CalendarMissedBrush" Color="#3A2028" />
+        <SolidColorBrush x:Key="CalendarMissedLineBrush" Color="#FB7185" />
+        <Thickness x:Key="SectionPadding">20</Thickness>
+        <Thickness x:Key="ControlPadding">14,9</Thickness>
+        <Thickness x:Key="NavPadding">16,10</Thickness>
+        <sys:Double x:Key="TimerFontSize" xmlns:sys="clr-namespace:System;assembly=mscorlib">64</sys:Double>
 
-        <Style x:Key="Card" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource PanelBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource LineBrush}" />
+        <Style x:Key="PageTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="MutedText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}" />
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+
+        <Style x:Key="MetricLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style x:Key="MetricValue" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="FontSize" Value="22" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style x:Key="SectionPanel" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="CornerRadius" Value="8" />
-            <Setter Property="Padding" Value="22" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="Padding" Value="{DynamicResource SectionPadding}" />
         </Style>
 
         <Style x:Key="FieldLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource MutedTextBrush}" />
             <Setter Property="FontSize" Value="12" />
-            <Setter Property="Margin" Value="0,14,0,6" />
+            <Setter Property="Margin" Value="0,12,0,5" />
         </Style>
 
         <Style x:Key="Input" TargetType="TextBox">
-            <Setter Property="Background" Value="#101319" />
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="BorderBrush" Value="#39414D" />
+            <Setter Property="Background" Value="{DynamicResource InputBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="10,8" />
-            <Setter Property="CaretBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="Padding" Value="10,7" />
+            <Setter Property="CaretBrush" Value="{DynamicResource PrimaryBrush}" />
             <Setter Property="FontSize" Value="14" />
+            <Setter Property="MinHeight" Value="34" />
+        </Style>
+
+        <Style x:Key="Combo" TargetType="ComboBox">
+            <Setter Property="Background" Value="{DynamicResource InputBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="MinHeight" Value="34" />
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Foreground" Value="#1F1F1F" />
+            <Setter Property="Padding" Value="8,5" />
         </Style>
 
         <Style x:Key="BaseButton" TargetType="Button">
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="Background" Value="#2A3039" />
-            <Setter Property="BorderBrush" Value="#3A4350" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="Background" Value="{DynamicResource ButtonBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
             <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="14,9" />
-            <Setter Property="MinHeight" Value="38" />
+            <Setter Property="Padding" Value="{DynamicResource ControlPadding}" />
+            <Setter Property="MinHeight" Value="34" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Cursor" Value="Hand" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
+                        <Border x:Name="ButtonRoot"
+                                Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="7"
+                                CornerRadius="4"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#36404C" />
+                                <Setter TargetName="ButtonRoot" Property="Background" Value="{DynamicResource ButtonHoverBrush}" />
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#20262F" />
+                                <Setter TargetName="ButtonRoot" Property="Background" Value="{DynamicResource ButtonPressedBrush}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -77,64 +146,101 @@
         </Style>
 
         <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
-            <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
-            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="Background" Value="{DynamicResource PrimaryDarkBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}" />
+            <Setter Property="Foreground" Value="White" />
         </Style>
 
         <Style x:Key="GhostButton" TargetType="Button" BasedOn="{StaticResource BaseButton}">
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="#404855" />
         </Style>
 
-        <Style x:Key="SectionTitle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="FontSize" Value="22" />
-            <Setter Property="FontWeight" Value="Bold" />
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="Margin" Value="0,8,0,0" />
         </Style>
 
-        <Style x:Key="MetricLabel" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource MutedTextBrush}" />
-            <Setter Property="FontSize" Value="12" />
-        </Style>
-
-        <Style x:Key="MetricValue" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-            <Setter Property="FontSize" Value="22" />
-            <Setter Property="FontWeight" Value="Bold" />
+        <Style TargetType="ProgressBar">
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}" />
+            <Setter Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
+            <Setter Property="Height" Value="8" />
         </Style>
 
         <Style TargetType="TabControl">
-            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Background" Value="{DynamicResource WindowBrush}" />
             <Setter Property="BorderThickness" Value="0" />
-            <Setter Property="Padding" Value="0" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabControl">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="236" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0"
+                                    Background="{DynamicResource SidebarBrush}"
+                                    BorderBrush="{DynamicResource LineBrush}"
+                                    BorderThickness="0,0,1,0">
+                                <DockPanel LastChildFill="True" Margin="18,18,12,18">
+                                    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,20">
+                                        <TextBlock Text="OneThing90"
+                                                   Foreground="{DynamicResource TextBrush}"
+                                                   FontSize="24"
+                                                   FontWeight="SemiBold" />
+                                        <TextBlock Text="90 минут. 90 дней. 1 дело."
+                                                   Foreground="{DynamicResource MutedTextBrush}"
+                                                   FontSize="12"
+                                                   Margin="0,4,0,0" />
+                                    </StackPanel>
+                                    <TabPanel IsItemsHost="True" />
+                                </DockPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="{DynamicResource WindowBrush}">
+                                <ContentPresenter ContentSource="SelectedContent" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style TargetType="TabItem">
-            <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+            <Setter Property="FontSize" Value="14" />
             <Setter Property="FontWeight" Value="SemiBold" />
-            <Setter Property="Padding" Value="16,10" />
-            <Setter Property="Margin" Value="0,0,8,0" />
+            <Setter Property="Padding" Value="{DynamicResource NavPadding}" />
+            <Setter Property="Margin" Value="0,2,0,2" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
-                        <Border x:Name="TabRoot"
-                                Background="#171A20"
-                                BorderBrush="#303640"
-                                BorderThickness="1"
-                                CornerRadius="8"
-                                Padding="{TemplateBinding Padding}"
-                                Margin="{TemplateBinding Margin}">
-                            <ContentPresenter ContentSource="Header"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center" />
-                        </Border>
+                        <Grid Margin="{TemplateBinding Margin}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="AccentBar"
+                                    Width="4"
+                                    CornerRadius="2"
+                                    Background="Transparent" />
+                            <Border x:Name="NavRoot"
+                                    Grid.Column="1"
+                                    Background="Transparent"
+                                    CornerRadius="5"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter ContentSource="Header"
+                                                  HorizontalAlignment="Left"
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="TabRoot" Property="Background" Value="#222832" />
+                                <Setter TargetName="NavRoot" Property="Background" Value="{DynamicResource SurfaceAltBrush}" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="TabRoot" Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
-                                <Setter TargetName="TabRoot" Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+                                <Setter TargetName="NavRoot" Property="Background" Value="{DynamicResource PrimarySoftBrush}" />
+                                <Setter TargetName="AccentBar" Property="Background" Value="{DynamicResource PrimaryBrush}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -143,87 +249,54 @@
         </Style>
 
         <Style x:Key="DayCellBorder" TargetType="Border">
-            <Setter Property="Width" Value="38" />
-            <Setter Property="Height" Value="38" />
-            <Setter Property="Margin" Value="4" />
-            <Setter Property="CornerRadius" Value="7" />
-            <Setter Property="Background" Value="#242A33" />
-            <Setter Property="BorderBrush" Value="#353D49" />
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Background" Value="{DynamicResource CalendarEmptyBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
             <Setter Property="BorderThickness" Value="1" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Status}" Value="Complete">
-                    <Setter Property="Background" Value="#16A34A" />
-                    <Setter Property="BorderBrush" Value="#86EFAC" />
+                    <Setter Property="Background" Value="{DynamicResource CalendarCompleteBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource CalendarCompleteLineBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Today">
-                    <Setter Property="Background" Value="#B45309" />
-                    <Setter Property="BorderBrush" Value="#FBBF24" />
+                    <Setter Property="Background" Value="{DynamicResource CalendarTodayBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource CalendarTodayLineBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="PartialToday">
-                    <Setter Property="Background" Value="#C2410C" />
-                    <Setter Property="BorderBrush" Value="#FDBA74" />
+                    <Setter Property="Background" Value="{DynamicResource CalendarTodayBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource CalendarTodayLineBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Partial">
-                    <Setter Property="Background" Value="#7C3AED" />
-                    <Setter Property="BorderBrush" Value="#C4B5FD" />
+                    <Setter Property="Background" Value="{DynamicResource CalendarPartialBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource CalendarPartialLineBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Missed">
-                    <Setter Property="Background" Value="#3A2028" />
-                    <Setter Property="BorderBrush" Value="#FB7185" />
+                    <Setter Property="Background" Value="{DynamicResource CalendarMissedBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource CalendarMissedLineBrush}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Status}" Value="Future">
-                    <Setter Property="Background" Value="#20242C" />
-                    <Setter Property="BorderBrush" Value="#303640" />
+                    <Setter Property="Background" Value="{DynamicResource CalendarFutureBrush}" />
+                    <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
     </Window.Resources>
 
-    <Grid Margin="24">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="0,0,0,18">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <StackPanel>
-                <TextBlock Text="OneThing90"
-                           Foreground="{StaticResource TextBrush}"
-                           FontSize="34"
-                           FontWeight="Bold" />
-                <TextBlock Text="{Binding PlanDayText}"
-                           Foreground="{StaticResource MutedTextBrush}"
-                           FontSize="14"
-                           Margin="0,4,0,0" />
-            </StackPanel>
-
-            <Border Grid.Column="1"
-                    Background="#16211F"
-                    BorderBrush="#245B54"
-                    BorderThickness="1"
-                    CornerRadius="8"
-                    Padding="14,9"
-                    VerticalAlignment="Center">
-                <TextBlock Text="90 минут - 90 дней - 1 дело"
-                           Foreground="{StaticResource PrimaryBrush}"
-                           FontWeight="SemiBold" />
-            </Border>
-        </Grid>
-
-        <Border Grid.Row="1"
+        <Border Grid.Row="0"
                 Visibility="{Binding BannerVisibility}"
-                Background="#221D14"
-                BorderBrush="#7C4F13"
-                BorderThickness="1"
-                CornerRadius="8"
-                Padding="16"
-                Margin="0,0,0,18">
+                Background="{DynamicResource BannerBrush}"
+                BorderBrush="{DynamicResource BannerLineBrush}"
+                BorderThickness="0,0,0,1"
+                Padding="18,12">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -231,11 +304,11 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel>
                     <TextBlock Text="{Binding BannerTitle}"
-                               Foreground="#FFE8B0"
-                               FontSize="15"
-                               FontWeight="Bold" />
+                               Foreground="{DynamicResource BannerTitleBrush}"
+                               FontSize="14"
+                               FontWeight="SemiBold" />
                     <TextBlock Text="{Binding BannerMessage}"
-                               Foreground="#F8D99C"
+                               Foreground="{DynamicResource BannerTextBrush}"
                                TextWrapping="Wrap"
                                Margin="0,3,0,0" />
                 </StackPanel>
@@ -255,250 +328,190 @@
             </Grid>
         </Border>
 
-        <TabControl Grid.Row="2">
+        <TabControl Grid.Row="1">
             <TabItem Header="Сегодня">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,18,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="18" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <Grid Margin="28">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="18" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Сегодня" Style="{StaticResource PageTitle}" />
 
-                        <Border Style="{StaticResource Card}">
-                            <StackPanel>
-                                <TextBlock Text="Сегодня" Style="{StaticResource SectionTitle}" />
-                                <TextBlock Text="{Binding ThingName}"
-                                           Foreground="{StaticResource PrimaryBrush}"
-                                           FontSize="24"
-                                           FontWeight="SemiBold"
-                                           TextWrapping="Wrap"
-                                           Margin="0,16,0,0" />
-                                <TextBlock Text="{Binding TodayStatusText}"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,8,0,20" />
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
 
-                                <Grid Margin="0,0,0,20">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel>
-                                        <TextBlock Text="Сегодня" Style="{StaticResource MetricLabel}" />
-                                        <TextBlock Text="{Binding TodayMinutesText}" Style="{StaticResource MetricValue}" />
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Серия" Style="{StaticResource MetricLabel}" />
-                                        <TextBlock Text="{Binding StreakText}" Style="{StaticResource MetricValue}" />
-                                    </StackPanel>
-                                </Grid>
+                            <Border Style="{StaticResource SectionPanel}">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding ThingName}"
+                                               Foreground="{DynamicResource PrimaryBrush}"
+                                               FontSize="23"
+                                               FontWeight="SemiBold"
+                                               TextWrapping="Wrap" />
+                                    <TextBlock Text="{Binding TodayStatusText}"
+                                               Style="{StaticResource MutedText}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,8,0,20" />
 
-                                <TextBlock Text="{Binding ReminderStatusText}"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,0,0,20" />
+                                    <Grid Margin="0,0,0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel>
+                                            <TextBlock Text="Сегодня" Style="{StaticResource MetricLabel}" />
+                                            <TextBlock Text="{Binding TodayMinutesText}" Style="{StaticResource MetricValue}" />
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1">
+                                            <TextBlock Text="Серия" Style="{StaticResource MetricLabel}" />
+                                            <TextBlock Text="{Binding StreakText}" Style="{StaticResource MetricValue}" />
+                                        </StackPanel>
+                                    </Grid>
 
-                                <Button Content="Начать 90-минутный блок"
-                                        Command="{Binding StartFocusCommand}"
-                                        Style="{StaticResource PrimaryButton}"
-                                        Margin="0,0,0,10" />
-                                <Button Content="Начать 15-минутное спасение"
-                                        Command="{Binding StartRescueCommand}"
-                                        Style="{StaticResource BaseButton}" />
-                            </StackPanel>
-                        </Border>
+                                    <TextBlock Text="{Binding ReminderStatusText}"
+                                               Style="{StaticResource MutedText}"
+                                               TextWrapping="Wrap"
+                                               Margin="0,0,0,20" />
 
-                        <Border Grid.Column="2" Style="{StaticResource Card}">
-                            <StackPanel>
-                                <TextBlock Text="Таймер фокуса" Style="{StaticResource SectionTitle}" />
-                                <TextBlock Text="{Binding TimerDisplay}"
-                                           Foreground="{StaticResource TextBrush}"
-                                           FontSize="64"
-                                           FontWeight="Bold"
-                                           Margin="0,22,0,0" />
-                                <TextBlock Text="{Binding TimerSubtitle}"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           TextWrapping="Wrap"
-                                           MinHeight="42" />
-                                <ProgressBar Value="{Binding TimerProgress, Mode=OneWay}"
-                                             Minimum="0"
-                                             Maximum="100"
-                                             Height="10"
-                                             Foreground="{StaticResource PrimaryBrush}"
-                                             Background="#262C35"
-                                             Margin="0,22,0,20" />
-                                <WrapPanel>
-                                    <Button Content="{Binding PauseButtonText}"
-                                            Command="{Binding PauseResumeCommand}"
-                                            Style="{StaticResource BaseButton}"
-                                            Width="132"
-                                            Margin="0,0,8,8" />
-                                    <Button Content="Записать сейчас"
-                                            Command="{Binding FinishCommand}"
-                                            Style="{StaticResource GhostButton}"
-                                            Width="156"
-                                            Margin="0,0,8,8" />
-                                </WrapPanel>
-                            </StackPanel>
-                        </Border>
+                                    <Button Content="Начать 90-минутный блок"
+                                            Command="{Binding StartFocusCommand}"
+                                            Style="{StaticResource PrimaryButton}"
+                                            Margin="0,0,0,8" />
+                                    <Button Content="Начать 15-минутное спасение"
+                                            Command="{Binding StartRescueCommand}"
+                                            Style="{StaticResource BaseButton}" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Style="{StaticResource SectionPanel}">
+                                <StackPanel>
+                                    <TextBlock Text="Таймер" Style="{StaticResource SectionTitle}" />
+                                    <TextBlock Text="{Binding TimerDisplay}"
+                                               Foreground="{DynamicResource TextBrush}"
+                                               FontSize="{DynamicResource TimerFontSize}"
+                                               FontWeight="SemiBold"
+                                               Margin="0,18,0,0" />
+                                    <TextBlock Text="{Binding TimerSubtitle}"
+                                               Style="{StaticResource MutedText}"
+                                               TextWrapping="Wrap"
+                                               MinHeight="38" />
+                                    <ProgressBar Value="{Binding TimerProgress, Mode=OneWay}"
+                                                 Minimum="0"
+                                                 Maximum="100"
+                                                 Margin="0,20,0,18" />
+                                    <WrapPanel>
+                                        <Button Content="{Binding PauseButtonText}"
+                                                Command="{Binding PauseResumeCommand}"
+                                                Style="{StaticResource BaseButton}"
+                                                Width="132"
+                                                Margin="0,0,8,8" />
+                                        <Button Content="Записать сейчас"
+                                                Command="{Binding FinishCommand}"
+                                                Style="{StaticResource GhostButton}"
+                                                Width="160"
+                                                Margin="0,0,8,8" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="Путь 90 дней">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,18,0,0">
-                    <Border Style="{StaticResource Card}">
-                        <StackPanel>
-                            <TextBlock Text="Путь 90 дней" Style="{StaticResource SectionTitle}" />
-                            <TextBlock Text="{Binding Why}"
-                                       Foreground="{StaticResource MutedTextBrush}"
-                                       TextWrapping="Wrap"
-                                       Margin="0,8,0,18" />
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="28">
+                        <TextBlock Text="Путь 90 дней" Style="{StaticResource PageTitle}" />
+                        <Border Style="{StaticResource SectionPanel}" Margin="0,18,0,0">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Why}"
+                                           Style="{StaticResource MutedText}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,18" />
 
-                            <Grid Margin="0,0,0,18">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel>
-                                    <TextBlock Text="Закрыто" Style="{StaticResource MetricLabel}" />
-                                    <TextBlock Text="{Binding DaysCompletedText}" Style="{StaticResource MetricValue}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Осталось" Style="{StaticResource MetricLabel}" />
-                                    <TextBlock Text="{Binding DaysRemainingText}" Style="{StaticResource MetricValue}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Прогресс" Style="{StaticResource MetricLabel}" />
-                                    <TextBlock Text="{Binding PlanProgress, StringFormat={}{0:0}%}" Style="{StaticResource MetricValue}" />
-                                </StackPanel>
-                            </Grid>
+                                <Grid Margin="0,0,0,18">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Закрыто" Style="{StaticResource MetricLabel}" />
+                                        <TextBlock Text="{Binding DaysCompletedText}" Style="{StaticResource MetricValue}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Осталось" Style="{StaticResource MetricLabel}" />
+                                        <TextBlock Text="{Binding DaysRemainingText}" Style="{StaticResource MetricValue}" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Прогресс" Style="{StaticResource MetricLabel}" />
+                                        <TextBlock Text="{Binding PlanProgress, StringFormat={}{0:0}%}" Style="{StaticResource MetricValue}" />
+                                    </StackPanel>
+                                </Grid>
 
-                            <ProgressBar Value="{Binding PlanProgress, Mode=OneWay}"
-                                         Minimum="0"
-                                         Maximum="100"
-                                         Height="10"
-                                         Foreground="{StaticResource PrimaryBrush}"
-                                         Background="#262C35"
-                                         Margin="0,0,0,22" />
+                                <ProgressBar Value="{Binding PlanProgress, Mode=OneWay}"
+                                             Minimum="0"
+                                             Maximum="100"
+                                             Margin="0,0,0,20" />
 
-                            <ItemsControl ItemsSource="{Binding Days}">
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="10" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Style="{StaticResource DayCellBorder}"
-                                                ToolTip="{Binding ToolTip}">
-                                            <TextBlock Text="{Binding Number}"
-                                                       Foreground="{StaticResource TextBrush}"
-                                                       FontSize="12"
-                                                       FontWeight="SemiBold"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" />
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                <ItemsControl ItemsSource="{Binding Days}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="10" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Style="{StaticResource DayCellBorder}"
+                                                    ToolTip="{Binding ToolTip}">
+                                                <TextBlock Text="{Binding Number}"
+                                                           Foreground="White"
+                                                           FontSize="12"
+                                                           FontWeight="SemiBold"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center" />
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
 
-                            <WrapPanel Margin="0,20,0,0">
-                                <TextBlock Text="Зеленый - закрыто"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,0,18,0" />
-                                <TextBlock Text="Желтый - сегодня"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           Margin="0,0,18,0" />
-                                <TextBlock Text="Розовый - пропуск"
-                                           Foreground="{StaticResource MutedTextBrush}" />
-                            </WrapPanel>
-                        </StackPanel>
-                    </Border>
+                                <WrapPanel Margin="0,18,0,0">
+                                    <TextBlock Text="Зеленый - закрыто"
+                                               Style="{StaticResource MutedText}"
+                                               Margin="0,0,18,0" />
+                                    <TextBlock Text="Желтый - сегодня"
+                                               Style="{StaticResource MutedText}"
+                                               Margin="0,0,18,0" />
+                                    <TextBlock Text="Розовый - пропуск"
+                                               Style="{StaticResource MutedText}" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="Дело">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,18,0,0">
-                    <Border Style="{StaticResource Card}" MaxWidth="720" HorizontalAlignment="Left">
-                        <StackPanel>
-                            <TextBlock Text="Главное дело" Style="{StaticResource SectionTitle}" />
-                            <TextBlock Text="Одна цель, которую приложение будет защищать от простоя."
-                                       Foreground="{StaticResource MutedTextBrush}"
-                                       TextWrapping="Wrap"
-                                       Margin="0,8,0,0" />
-
-                            <TextBlock Text="Название дела" Style="{StaticResource FieldLabel}" />
-                            <TextBox Text="{Binding ThingName, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource Input}" />
-
-                            <TextBlock Text="Почему это важно" Style="{StaticResource FieldLabel}" />
-                            <TextBox Text="{Binding Why, UpdateSourceTrigger=PropertyChanged}"
-                                     Style="{StaticResource Input}"
-                                     MinHeight="96"
-                                     TextWrapping="Wrap"
-                                     AcceptsReturn="True" />
-
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="14" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <StackPanel>
-                                    <TextBlock Text="Дата старта" Style="{StaticResource FieldLabel}" />
-                                    <TextBox Text="{Binding StartDateText, UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource Input}" />
-                                </StackPanel>
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Минут в день" Style="{StaticResource FieldLabel}" />
-                                    <TextBox Text="{Binding TargetMinutesText, UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource Input}" />
-                                </StackPanel>
-                            </Grid>
-
-                            <Button Content="Сохранить дело"
-                                    Command="{Binding SavePlanCommand}"
-                                    Style="{StaticResource PrimaryButton}"
-                                    Width="180"
-                                    HorizontalAlignment="Left"
-                                    Margin="0,20,0,0" />
-                        </StackPanel>
-                    </Border>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="Настройки">
-                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,18,0,0">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="18" />
-                            <ColumnDefinition Width="1*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Border Style="{StaticResource Card}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="28" MaxWidth="760" HorizontalAlignment="Left">
+                        <TextBlock Text="Главное дело" Style="{StaticResource PageTitle}" />
+                        <Border Style="{StaticResource SectionPanel}" Margin="0,18,0,0">
                             <StackPanel>
-                                <TextBlock Text="Напоминания" Style="{StaticResource SectionTitle}" />
-                                <TextBlock Text="{Binding ReminderStatusText}"
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,8,0,14" />
+                                <TextBlock Text="Название дела" Style="{StaticResource FieldLabel}" Margin="0,0,0,5" />
+                                <TextBox Text="{Binding ThingName, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource Input}" />
 
-                                <CheckBox Content="Напоминания включены"
-                                          IsChecked="{Binding RemindersEnabled}"
-                                          Foreground="{StaticResource TextBrush}"
-                                          Margin="0,8,0,0" />
-                                <CheckBox Content="Сворачивать в трей"
-                                          IsChecked="{Binding MinimizeToTray}"
-                                          Foreground="{StaticResource TextBrush}"
-                                          Margin="0,8,0,0" />
-                                <CheckBox Content="Запускать вместе с Windows"
-                                          IsChecked="{Binding LaunchAtLogin}"
-                                          Foreground="{StaticResource TextBrush}"
-                                          Margin="0,8,0,0" />
+                                <TextBlock Text="Почему это важно" Style="{StaticResource FieldLabel}" />
+                                <TextBox Text="{Binding Why, UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource Input}"
+                                         MinHeight="96"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True" />
 
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -507,62 +520,161 @@
                                         <ColumnDefinition Width="*" />
                                     </Grid.ColumnDefinitions>
                                     <StackPanel>
-                                        <TextBlock Text="Напоминать с" Style="{StaticResource FieldLabel}" />
-                                        <TextBox Text="{Binding ReminderStartText, UpdateSourceTrigger=PropertyChanged}"
+                                        <TextBlock Text="Дата старта" Style="{StaticResource FieldLabel}" />
+                                        <TextBox Text="{Binding StartDateText, UpdateSourceTrigger=PropertyChanged}"
                                                  Style="{StaticResource Input}" />
                                     </StackPanel>
                                     <StackPanel Grid.Column="2">
-                                        <TextBlock Text="Напоминать до" Style="{StaticResource FieldLabel}" />
-                                        <TextBox Text="{Binding ReminderEndText, UpdateSourceTrigger=PropertyChanged}"
+                                        <TextBlock Text="Минут в день" Style="{StaticResource FieldLabel}" />
+                                        <TextBox Text="{Binding TargetMinutesText, UpdateSourceTrigger=PropertyChanged}"
                                                  Style="{StaticResource Input}" />
                                     </StackPanel>
                                 </Grid>
 
-                                <TextBlock Text="Повторять каждые N минут" Style="{StaticResource FieldLabel}" />
-                                <TextBox Text="{Binding ReminderIntervalText, UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource Input}" />
-
-                                <WrapPanel Margin="0,20,0,0">
-                                    <Button Content="Сохранить"
-                                            Command="{Binding SaveSettingsCommand}"
-                                            Style="{StaticResource PrimaryButton}"
-                                            Width="120"
-                                            Margin="0,0,8,8" />
-                                    <Button Content="Отложить 60"
-                                            Command="{Binding Snooze60Command}"
-                                            Style="{StaticResource BaseButton}"
-                                            Width="130"
-                                            Margin="0,0,8,8" />
-                                    <Button Content="Пропустить сегодня"
-                                            Command="{Binding SnoozeTodayCommand}"
-                                            Style="{StaticResource GhostButton}"
-                                            Width="170"
-                                            Margin="0,0,8,8" />
-                                </WrapPanel>
+                                <Button Content="Сохранить дело"
+                                        Command="{Binding SavePlanCommand}"
+                                        Style="{StaticResource PrimaryButton}"
+                                        Width="180"
+                                        HorizontalAlignment="Left"
+                                        Margin="0,20,0,0" />
                             </StackPanel>
                         </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
 
-                        <Border Grid.Column="2" Style="{StaticResource Card}">
+            <TabItem Header="Настройки">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="28">
+                        <TextBlock Text="Настройки" Style="{StaticResource PageTitle}" />
+
+                        <Grid Margin="0,18,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="18" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
                             <StackPanel>
-                                <TextBlock Text="Трей и данные" Style="{StaticResource SectionTitle}" />
-                                <TextBlock Text="Если включено сворачивание в трей, крестик не закрывает приложение: оно продолжает следить за вечерним окном напоминаний."
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,8,0,18" />
+                                <Border Style="{StaticResource SectionPanel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Внешний вид" Style="{StaticResource SectionTitle}" />
 
-                                <TextBlock Text="В трее доступны: открыть окно, начать 90 минут, отложить на 30 минут и выйти."
-                                           Foreground="{StaticResource MutedTextBrush}"
-                                           TextWrapping="Wrap"
-                                           Margin="0,0,0,18" />
+                                        <TextBlock Text="Тема" Style="{StaticResource FieldLabel}" />
+                                        <ComboBox SelectedValue="{Binding ThemeMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Tag"
+                                                  Style="{StaticResource Combo}">
+                                            <ComboBoxItem Content="Как в Windows" Tag="System" />
+                                            <ComboBoxItem Content="Темная" Tag="Dark" />
+                                            <ComboBoxItem Content="Светлая" Tag="Light" />
+                                        </ComboBox>
 
-                                <Button Content="Открыть папку данных"
-                                        Command="{Binding OpenDataFolderCommand}"
-                                        Style="{StaticResource GhostButton}"
-                                        Width="210"
-                                        HorizontalAlignment="Left" />
+                                        <TextBlock Text="Акцент" Style="{StaticResource FieldLabel}" />
+                                        <ComboBox SelectedValue="{Binding AccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Tag"
+                                                  Style="{StaticResource Combo}">
+                                            <ComboBoxItem Content="Бирюзовый" Tag="Teal" />
+                                            <ComboBoxItem Content="Синий" Tag="Blue" />
+                                            <ComboBoxItem Content="Зеленый" Tag="Green" />
+                                            <ComboBoxItem Content="Фиолетовый" Tag="Violet" />
+                                            <ComboBoxItem Content="Янтарный" Tag="Amber" />
+                                            <ComboBoxItem Content="Розовый" Tag="Rose" />
+                                        </ComboBox>
+
+                                        <TextBlock Text="Плотность" Style="{StaticResource FieldLabel}" />
+                                        <ComboBox SelectedValue="{Binding DensityMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  SelectedValuePath="Tag"
+                                                  Style="{StaticResource Combo}">
+                                            <ComboBoxItem Content="Компактная" Tag="Compact" />
+                                            <ComboBoxItem Content="Обычная" Tag="Comfortable" />
+                                            <ComboBoxItem Content="Свободная" Tag="Spacious" />
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SectionPanel}" Margin="0,18,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Трей" Style="{StaticResource SectionTitle}" />
+                                        <CheckBox Content="Сворачивать в трей"
+                                                  IsChecked="{Binding MinimizeToTray}" />
+                                        <CheckBox Content="Запускать вместе с Windows"
+                                                  IsChecked="{Binding LaunchAtLogin}" />
+                                        <Button Content="Открыть папку данных"
+                                                Command="{Binding OpenDataFolderCommand}"
+                                                Style="{StaticResource GhostButton}"
+                                                Width="210"
+                                                HorizontalAlignment="Left"
+                                                Margin="0,16,0,0" />
+                                    </StackPanel>
+                                </Border>
                             </StackPanel>
-                        </Border>
-                    </Grid>
+
+                            <StackPanel Grid.Column="2">
+                                <Border Style="{StaticResource SectionPanel}">
+                                    <StackPanel>
+                                        <TextBlock Text="Напоминания" Style="{StaticResource SectionTitle}" />
+                                        <TextBlock Text="{Binding ReminderStatusText}"
+                                                   Style="{StaticResource MutedText}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,8,0,6" />
+
+                                        <CheckBox Content="Напоминания включены"
+                                                  IsChecked="{Binding RemindersEnabled}" />
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="14" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="Напоминать с" Style="{StaticResource FieldLabel}" />
+                                                <TextBox Text="{Binding ReminderStartText, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource Input}" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="2">
+                                                <TextBlock Text="Напоминать до" Style="{StaticResource FieldLabel}" />
+                                                <TextBox Text="{Binding ReminderEndText, UpdateSourceTrigger=PropertyChanged}"
+                                                         Style="{StaticResource Input}" />
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <TextBlock Text="Повторять каждые N минут" Style="{StaticResource FieldLabel}" />
+                                        <TextBox Text="{Binding ReminderIntervalText, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource Input}" />
+
+                                        <WrapPanel Margin="0,18,0,0">
+                                            <Button Content="Сохранить"
+                                                    Command="{Binding SaveSettingsCommand}"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    Width="120"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Отложить 60"
+                                                    Command="{Binding Snooze60Command}"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Width="130"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Пропустить сегодня"
+                                                    Command="{Binding SnoozeTodayCommand}"
+                                                    Style="{StaticResource GhostButton}"
+                                                    Width="170"
+                                                    Margin="0,0,8,8" />
+                                        </WrapPanel>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border Style="{StaticResource SectionPanel}" Margin="0,18,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Telegram" Style="{StaticResource SectionTitle}" />
+                                        <TextBlock Text="Привязка будет только к подтвержденному пользователю."
+                                                   Style="{StaticResource MutedText}"
+                                                   TextWrapping="Wrap"
+                                                   Margin="0,8,0,0" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
                 </ScrollViewer>
             </TabItem>
         </TabControl>
