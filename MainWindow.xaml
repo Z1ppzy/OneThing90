@@ -131,20 +131,6 @@
             <Setter Property="MinHeight" Value="34" />
         </Style>
 
-        <Style x:Key="Combo" TargetType="ComboBox">
-            <Setter Property="Background" Value="{DynamicResource InputBrush}" />
-            <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
-            <Setter Property="BorderBrush" Value="{DynamicResource LineBrush}" />
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Padding" Value="8,5" />
-            <Setter Property="MinHeight" Value="34" />
-        </Style>
-
-        <Style TargetType="ComboBoxItem">
-            <Setter Property="Foreground" Value="#1F1F1F" />
-            <Setter Property="Padding" Value="8,5" />
-        </Style>
-
         <Style x:Key="BaseButton" TargetType="Button">
             <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
             <Setter Property="Background" Value="{DynamicResource ButtonBrush}" />
@@ -267,20 +253,25 @@
                                                        FontSize="12"
                                                        FontWeight="SemiBold"
                                                        Margin="0,0,0,8" />
-                                            <UniformGrid Columns="3" Margin="0,0,0,8">
+                                            <UniformGrid Columns="2" Margin="0,0,0,8">
                                                 <Button Content="Сист"
                                                         Command="{Binding SetThemeCommand}"
                                                         CommandParameter="System"
                                                         Style="{StaticResource QuickButton}"
-                                                        Margin="0,0,4,0" />
+                                                        Margin="0,0,4,4" />
                                                 <Button Content="Тем"
                                                         Command="{Binding SetThemeCommand}"
                                                         CommandParameter="Dark"
                                                         Style="{StaticResource QuickButton}"
-                                                        Margin="0,0,4,0" />
+                                                        Margin="0,0,0,4" />
                                                 <Button Content="Свет"
                                                         Command="{Binding SetThemeCommand}"
                                                         CommandParameter="Light"
+                                                        Style="{StaticResource QuickButton}"
+                                                        Margin="0,0,4,0" />
+                                                <Button Content="Газета"
+                                                        Command="{Binding SetThemeCommand}"
+                                                        CommandParameter="Paper"
                                                         Style="{StaticResource QuickButton}" />
                                             </UniformGrid>
                                             <WrapPanel>
@@ -747,34 +738,81 @@
                                         <TextBlock Text="Внешний вид" Style="{StaticResource SectionTitle}" />
 
                                         <TextBlock Text="Тема" Style="{StaticResource FieldLabel}" />
-                                        <ComboBox SelectedValue="{Binding ThemeMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  SelectedValuePath="Tag"
-                                                  Style="{StaticResource Combo}">
-                                            <ComboBoxItem Content="Как в Windows" Tag="System" />
-                                            <ComboBoxItem Content="Темная" Tag="Dark" />
-                                            <ComboBoxItem Content="Светлая" Tag="Light" />
-                                        </ComboBox>
+                                        <WrapPanel>
+                                            <Button Content="Как в Windows"
+                                                    Command="{Binding SetThemeCommand}"
+                                                    CommandParameter="System"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Темная"
+                                                    Command="{Binding SetThemeCommand}"
+                                                    CommandParameter="Dark"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Светлая"
+                                                    Command="{Binding SetThemeCommand}"
+                                                    CommandParameter="Light"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Газета"
+                                                    Command="{Binding SetThemeCommand}"
+                                                    CommandParameter="Paper"
+                                                    Style="{StaticResource PrimaryButton}"
+                                                    Margin="0,0,8,8" />
+                                        </WrapPanel>
 
                                         <TextBlock Text="Акцент" Style="{StaticResource FieldLabel}" />
-                                        <ComboBox SelectedValue="{Binding AccentColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  SelectedValuePath="Tag"
-                                                  Style="{StaticResource Combo}">
-                                            <ComboBoxItem Content="Бирюзовый" Tag="Teal" />
-                                            <ComboBoxItem Content="Синий" Tag="Blue" />
-                                            <ComboBoxItem Content="Зеленый" Tag="Green" />
-                                            <ComboBoxItem Content="Фиолетовый" Tag="Violet" />
-                                            <ComboBoxItem Content="Янтарный" Tag="Amber" />
-                                            <ComboBoxItem Content="Розовый" Tag="Rose" />
-                                        </ComboBox>
+                                        <WrapPanel>
+                                            <Button Content="Бирюзовый"
+                                                    Command="{Binding SetAccentCommand}"
+                                                    CommandParameter="Teal"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Синий"
+                                                    Command="{Binding SetAccentCommand}"
+                                                    CommandParameter="Blue"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Зеленый"
+                                                    Command="{Binding SetAccentCommand}"
+                                                    CommandParameter="Green"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Фиолетовый"
+                                                    Command="{Binding SetAccentCommand}"
+                                                    CommandParameter="Violet"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Янтарный"
+                                                    Command="{Binding SetAccentCommand}"
+                                                    CommandParameter="Amber"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Розовый"
+                                                    Command="{Binding SetAccentCommand}"
+                                                    CommandParameter="Rose"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                        </WrapPanel>
 
                                         <TextBlock Text="Плотность" Style="{StaticResource FieldLabel}" />
-                                        <ComboBox SelectedValue="{Binding DensityMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  SelectedValuePath="Tag"
-                                                  Style="{StaticResource Combo}">
-                                            <ComboBoxItem Content="Компактная" Tag="Compact" />
-                                            <ComboBoxItem Content="Обычная" Tag="Comfortable" />
-                                            <ComboBoxItem Content="Свободная" Tag="Spacious" />
-                                        </ComboBox>
+                                        <WrapPanel>
+                                            <Button Content="Компактная"
+                                                    Command="{Binding SetDensityCommand}"
+                                                    CommandParameter="Compact"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Обычная"
+                                                    Command="{Binding SetDensityCommand}"
+                                                    CommandParameter="Comfortable"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                            <Button Content="Свободная"
+                                                    Command="{Binding SetDensityCommand}"
+                                                    CommandParameter="Spacious"
+                                                    Style="{StaticResource BaseButton}"
+                                                    Margin="0,0,8,8" />
+                                        </WrapPanel>
 
                                         <TextBlock Text="Свой цвет акцента" Style="{StaticResource FieldLabel}" />
                                         <Grid>

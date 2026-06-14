@@ -320,7 +320,7 @@ public sealed class MainViewModel : ObservableObject
         RemindersEnabled = settings.RemindersEnabled;
         MinimizeToTray = settings.MinimizeToTray;
         LaunchAtLogin = settings.LaunchAtLogin;
-        ThemeMode = NormalizeOption(settings.ThemeMode, ["System", "Dark", "Light"], "System");
+        ThemeMode = NormalizeOption(settings.ThemeMode, ["System", "Dark", "Light", "Paper"], "System");
         AccentColor = NormalizeOption(settings.AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose", "Custom"], "Teal");
         DensityMode = NormalizeOption(settings.DensityMode, ["Compact", "Comfortable", "Spacious"], "Comfortable");
         CustomAccentHex = TryNormalizeHex(settings.CustomAccentHex, out var customAccentHex) ? customAccentHex : "#0D9488";
@@ -384,7 +384,7 @@ public sealed class MainViewModel : ObservableObject
         _state.Settings.RemindersEnabled = RemindersEnabled;
         _state.Settings.MinimizeToTray = MinimizeToTray;
         _state.Settings.LaunchAtLogin = LaunchAtLogin;
-        _state.Settings.ThemeMode = NormalizeOption(ThemeMode, ["System", "Dark", "Light"], "System");
+        _state.Settings.ThemeMode = NormalizeOption(ThemeMode, ["System", "Dark", "Light", "Paper"], "System");
         _state.Settings.AccentColor = NormalizeOption(AccentColor, ["Teal", "Blue", "Green", "Violet", "Amber", "Rose", "Custom"], "Teal");
         _state.Settings.DensityMode = NormalizeOption(DensityMode, ["Compact", "Comfortable", "Spacious"], "Comfortable");
         _state.Settings.CustomAccentHex = TryNormalizeHex(CustomAccentHex, out var customAccentHex) ? customAccentHex : "#0D9488";
@@ -416,7 +416,7 @@ public sealed class MainViewModel : ObservableObject
 
     private void SetTheme(string? theme)
     {
-        var normalizedTheme = NormalizeOption(theme, ["System", "Dark", "Light"], "System");
+        var normalizedTheme = NormalizeOption(theme, ["System", "Dark", "Light", "Paper"], "System");
         ThemeMode = normalizedTheme;
         _state.Settings.ThemeMode = normalizedTheme;
         SaveAppearanceOnly();

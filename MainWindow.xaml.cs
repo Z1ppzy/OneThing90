@@ -123,6 +123,14 @@ public partial class MainWindow : Window
 
     private void ApplyAppearance()
     {
+        if (_viewModel.ThemeMode == "Paper")
+        {
+            ApplyPaperTheme();
+            ApplyAccent(_viewModel.AccentColor, useLight: true);
+            ApplyDensity(_viewModel.DensityMode);
+            return;
+        }
+
         var useLight = _viewModel.ThemeMode switch
         {
             "Light" => true,
@@ -134,6 +142,38 @@ public partial class MainWindow : Window
         ApplyCustomWindowColorIfNeeded();
         ApplyAccent(_viewModel.AccentColor, useLight);
         ApplyDensity(_viewModel.DensityMode);
+    }
+
+    private void ApplyPaperTheme()
+    {
+        SetBrush("WindowBrush", "#F4EBD8");
+        SetBrush("SidebarBrush", "#EEE1C7");
+        SetBrush("SurfaceBrush", "#FBF5E8");
+        SetBrush("SurfaceAltBrush", "#EFE2C7");
+        SetBrush("InputBrush", "#FFF9EC");
+        SetBrush("ButtonBrush", "#F7EBD5");
+        SetBrush("ButtonHoverBrush", "#EAD8B8");
+        SetBrush("ButtonPressedBrush", "#DEC8A2");
+        SetBrush("LineBrush", "#5E4B32");
+        SetBrush("TextBrush", "#1D1711");
+        SetBrush("MutedTextBrush", "#6D5A42");
+        SetBrush("BannerBrush", "#EFE0B7");
+        SetBrush("BannerLineBrush", "#8A6B2E");
+        SetBrush("BannerTitleBrush", "#2A1B10");
+        SetBrush("BannerTextBrush", "#4E3923");
+        SetBrush("CalendarEmptyBrush", "#F7EDD9");
+        SetBrush("CalendarMissedBrush", "#E8C7B9");
+        SetBrush("CalendarFutureBrush", "#EDE0C8");
+        SetBrush("CalendarCompleteBrush", "#355E3B");
+        SetBrush("CalendarCompleteLineBrush", "#1F3F27");
+        SetBrush("CalendarTodayBrush", "#A45A2A");
+        SetBrush("CalendarTodayLineBrush", "#6B3718");
+        SetBrush("CalendarPartialBrush", "#6E4E8F");
+        SetBrush("CalendarPartialLineBrush", "#3F2B56");
+        SetBrush("CalendarMissedLineBrush", "#7C2D22");
+        SetBrush("PrimaryBrush", "#8B1E1E");
+        SetBrush("PrimaryDarkBrush", "#681414");
+        SetBrush("PrimarySoftBrush", "#E8D0BD");
     }
 
     private void ApplyBaseTheme(bool useLight)
