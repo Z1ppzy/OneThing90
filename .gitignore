@@ -1,0 +1,27 @@
+# Build output
+bin/
+obj/
+out/
+publish/
+
+# Visual Studio and Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET
+TestResults/
+*.nupkg
+*.snupkg
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# App runtime data
+*.log
+state.json
+state.json.tmp
