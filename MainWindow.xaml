@@ -275,7 +275,7 @@
                                        Foreground="{StaticResource MutedTextBrush}"
                                        TextWrapping="Wrap"
                                        MinHeight="38" />
-                            <ProgressBar Value="{Binding TimerProgress}"
+                            <ProgressBar Value="{Binding TimerProgress, Mode=OneWay}"
                                          Minimum="0"
                                          Maximum="100"
                                          Height="10"
@@ -344,7 +344,7 @@
                             </StackPanel>
                         </Grid>
 
-                        <ProgressBar Value="{Binding PlanProgress}"
+                        <ProgressBar Value="{Binding PlanProgress, Mode=OneWay}"
                                      Minimum="0"
                                      Maximum="100"
                                      Height="10"
