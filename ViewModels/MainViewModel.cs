@@ -73,6 +73,7 @@ public sealed class MainViewModel : ObservableObject
         SetDensityCommand = new RelayCommand(parameter => SetDensity(parameter as string));
         ApplyCustomColorsCommand = new RelayCommand(ApplyCustomColors);
         ResetCustomColorsCommand = new RelayCommand(ResetCustomColors);
+        StartSessionCommand = new RelayCommand(StartSessionFromPreset);
         StartFocusCommand = new RelayCommand(() => StartSession(_state.Plan.TargetMinutes));
         StartRescueCommand = new RelayCommand(() => StartSession(15));
         PauseResumeCommand = new RelayCommand(PauseOrResume);
@@ -107,6 +108,7 @@ public sealed class MainViewModel : ObservableObject
     public ICommand SetDensityCommand { get; }
     public ICommand ApplyCustomColorsCommand { get; }
     public ICommand ResetCustomColorsCommand { get; }
+    public ICommand StartSessionCommand { get; }
     public ICommand StartFocusCommand { get; }
     public ICommand StartRescueCommand { get; }
     public ICommand PauseResumeCommand { get; }
@@ -494,6 +496,16 @@ public sealed class MainViewModel : ObservableObject
     public void SnoozeFromTray(TimeSpan duration)
     {
         Snooze(duration);
+    }
+
+    private void StartSessionFromPreset(object? parameter)
+    {
+        var text = parameter?.ToString();
+        var minutes = int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedMinutes)
+            ? parsedMinutes
+            : _state.Plan.TargetMinutes;
+
+        StartSession(Math.Clamp(minutes, 5, 240));
     }
 
     private void StartSession(int minutes)
